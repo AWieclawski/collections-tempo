@@ -1,4 +1,4 @@
-package inf.andrzej.wieclawski;
+package inf.andrzej.wieclawski.models;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

@@ -1,7 +1,10 @@
-package inf.andrzej.wieclawski;
+package inf.andrzej.wieclawski.models;
+
+import inf.andrzej.wieclawski.models.Employee;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class PayDue {
 
@@ -81,7 +84,7 @@ public class PayDue {
                 ", worker=" + worker +
                 ", daysOfWork=" + daysOfWork +
                 ", daysOfDelegation=" + daysOfDelegation +
-                ", billedMonthYear=" + billedMonthYear +
+                ", billedMonthYear=" + billedMonthYear.format(DateTimeFormatter.ofPattern("MM-yyyy")) +
                 ", paymentPerDay=" + paymentPerDay +
                 '}';
     }
