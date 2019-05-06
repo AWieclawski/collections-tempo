@@ -78,7 +78,7 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
             logger.info("Deleting payDue with id: " + idOfPayDueToDelete);
             return PaymentRepository.findPayDueById(idOfPayDueToDelete);
         }
-        logger.info("Can not delete user with id: " + idOfPayDueToDelete);
+        logger.info("Can not delete payDue with id: " + idOfPayDueToDelete);
         return PaymentRepository.findPayDueById(idOfPayDueToDelete);
     }
 }

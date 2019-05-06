@@ -15,20 +15,20 @@ public class PaymentRepository {
 
     private static Logger logger = Logger.getLogger(PaymentRepository.class.getName());
 
-    private static List<PayDue> baseOfPayDue = new ArrayList<>();
+    private static List<PayDue> baseOfPayDues = new ArrayList<>();
     private static List<Employee> lisOfWorkers = new ArrayList<>();
 
     public static List<PayDue> getPayDueBase() {
-        logger.info("Before fillPayDueBaseWithDefaults baseOfPayDue. Size: " + baseOfPayDue.size());
-        if (baseOfPayDue.size() == 0) {
+        logger.info("Before fillPayDueBaseWithDefaults baseOfPayDues. Size: " + baseOfPayDues.size());
+        if (baseOfPayDues.size() == 0) {
             fillPayDueBaseWithDefaults();
-            logger.info("fillPayDueBaseWithDefaults initialised baseOfPayDue. Size: " + baseOfPayDue.size());
+            logger.info("fillPayDueBaseWithDefaults initialised baseOfPayDues. Size: " + baseOfPayDues.size());
         } else {
-            logger.info("baseOfPayDue already initialised. Size: " + baseOfPayDue.size());
+            logger.info("baseOfPayDues already initialised. Size: " + baseOfPayDues.size());
         }
 
-        logger.info("Return baseOfPayDue. Size: " + baseOfPayDue.size());
-        return baseOfPayDue;
+        logger.info("Return baseOfPayDues. Size: " + baseOfPayDues.size());
+        return baseOfPayDues;
     }
 
     private static void fillPayDueBaseWithDefaults() {
@@ -56,7 +56,7 @@ public class PaymentRepository {
                     YearMonth.parse("01-2019", DateTimeFormatter.ofPattern("MM-yyyy")),
                     BigDecimal.valueOf(133)
             );
-            baseOfPayDue.add(payDue1);
+            baseOfPayDues.add(payDue1);
             count++;
 
             PayDue payDue2 = new PayDue(
@@ -64,7 +64,7 @@ public class PaymentRepository {
                     YearMonth.parse("02-2019", DateTimeFormatter.ofPattern("MM-yyyy")),
                     BigDecimal.valueOf(134)
             );
-            baseOfPayDue.add(payDue2);
+            baseOfPayDues.add(payDue2);
             count++;
 
             PayDue payDue3 = new PayDue(
@@ -72,7 +72,7 @@ public class PaymentRepository {
                     YearMonth.parse("03-2019", DateTimeFormatter.ofPattern("MM-yyyy")),
                     BigDecimal.valueOf(135)
             );
-            baseOfPayDue.add(payDue3);
+            baseOfPayDues.add(payDue3);
             count++;
 
             PayDue payDue4 = new PayDue(
@@ -80,7 +80,7 @@ public class PaymentRepository {
                     YearMonth.parse("04-2019", DateTimeFormatter.ofPattern("MM-yyyy")),
                     BigDecimal.valueOf(136)
             );
-            baseOfPayDue.add(payDue4);
+            baseOfPayDues.add(payDue4);
             count++;
 
             PayDue payDue5 = new PayDue(
@@ -88,7 +88,7 @@ public class PaymentRepository {
                     YearMonth.parse("05-2019", DateTimeFormatter.ofPattern("MM-yyyy")),
                     BigDecimal.valueOf(136)
             );
-            baseOfPayDue.add(payDue5);
+            baseOfPayDues.add(payDue5);
             count++;
 
             PayDue payDue6 = new PayDue(
@@ -96,7 +96,7 @@ public class PaymentRepository {
                     YearMonth.parse("06-2019", DateTimeFormatter.ofPattern("MM-yyyy")),
                     BigDecimal.valueOf(136)
             );
-            baseOfPayDue.add(payDue6);
+            baseOfPayDues.add(payDue6);
             count++;
 
             PayDue payDue7 = new PayDue(
@@ -104,7 +104,7 @@ public class PaymentRepository {
                     YearMonth.parse("07-2019", DateTimeFormatter.ofPattern("MM-yyyy")),
                     BigDecimal.valueOf(137)
             );
-            baseOfPayDue.add(payDue7);
+            baseOfPayDues.add(payDue7);
             count++;
 
             PayDue payDue8 = new PayDue(
@@ -112,7 +112,7 @@ public class PaymentRepository {
                     YearMonth.parse("08-2019", DateTimeFormatter.ofPattern("MM-yyyy")),
                     BigDecimal.valueOf(138)
             );
-            baseOfPayDue.add(payDue8);
+            baseOfPayDues.add(payDue8);
             count++;
 
             PayDue payDue9 = new PayDue(
@@ -120,7 +120,7 @@ public class PaymentRepository {
                     YearMonth.parse("09-2019", DateTimeFormatter.ofPattern("MM-yyyy")),
                     BigDecimal.valueOf(139)
             );
-            baseOfPayDue.add(payDue9);
+            baseOfPayDues.add(payDue9);
             count++;
 
             PayDue payDue10 = new PayDue(
@@ -128,7 +128,7 @@ public class PaymentRepository {
                     YearMonth.parse("10-2019", DateTimeFormatter.ofPattern("MM-yyyy")),
                     BigDecimal.valueOf(140)
             );
-            baseOfPayDue.add(payDue4);
+            baseOfPayDues.add(payDue4);
             count++;
 
             PayDue payDue11 = new PayDue(
@@ -136,7 +136,7 @@ public class PaymentRepository {
                     YearMonth.parse("11-2019", DateTimeFormatter.ofPattern("MM-yyyy")),
                     BigDecimal.valueOf(141)
             );
-            baseOfPayDue.add(payDue11);
+            baseOfPayDues.add(payDue11);
             count++;
 
             PayDue payDue12 = new PayDue(
@@ -144,34 +144,35 @@ public class PaymentRepository {
                     YearMonth.parse("12-2019", DateTimeFormatter.ofPattern("MM-yyyy")),
                     BigDecimal.valueOf(142)
             );
-            baseOfPayDue.add(payDue12);
+            baseOfPayDues.add(payDue12);
             count++;
         }
     }
 
     public static boolean addPayDueToBase(PayDue payDueToAdd) {
         boolean status = false;
-        logger.info("baseOfPayDue size before addPayDueToBase: " + baseOfPayDue.size());
+        logger.info("baseOfPayDues size before addPayDueToBase: " + baseOfPayDues.size());
         if (getPayDueBase().stream().noneMatch(o -> o.getPayDueId().equals(payDueToAdd.getPayDueId()))) {
-            baseOfPayDue.add(payDueToAdd);
-            logger.info("baseOfPayDue size after successful addPayDueToBase: " + baseOfPayDue.size());
+            baseOfPayDues.add(payDueToAdd);
+            logger.info("baseOfPayDues size after successful addPayDueToBase: " + baseOfPayDues.size());
             status=true;
         } else {
-            logger.info("payDueToAdd id exists in baseOfPayDue. Size after not successful addPayDueToBase: " + baseOfPayDue.size());
+            logger.info("payDueToAdd id exists in baseOfPayDues. Size after not successful addPayDueToBase: "
+                    + baseOfPayDues.size());
             return status;
         }
         return status;
     }
 
     public static Long getNextId() {
-        logger.info("getNextId baseOfPayDue size: " + baseOfPayDue.size());
-        return (long) (baseOfPayDue.size() + 1);
+        logger.info("getNextId baseOfPayDues size: " + baseOfPayDues.size());
+        return (long) (baseOfPayDues.size() + 1);
     }
 
     public static PayDue findPayDueById(Long idOfPayDueToFind) {
 
         return
-                baseOfPayDue.stream()
+                baseOfPayDues.stream()
                         .filter(payDue -> (idOfPayDueToFind).equals(payDue.getPayDueId()))
                         .findAny()
                         .orElse(null);
