@@ -3,20 +3,18 @@ package inf.andrzej.wieclawski.daos;
 import inf.andrzej.wieclawski.models.PayDue;
 import inf.andrzej.wieclawski.repositories.PaymentRepository;
 
-import java.util.ArrayList;
+import javax.ejb.Stateless;
 import java.util.List;
 import java.util.logging.Logger;
 
+@Stateless
 public class PaymentServiceDaoBean implements PaymentServiceDao {
-
-    private List<PayDue> payDues = new ArrayList<>();
 
     private static Logger logger = Logger.getLogger(PaymentServiceDaoBean.class.getName());
 
     @Override
     public List<PayDue> getPayDueList() {
-        payDues.clear();
-        payDues = PaymentRepository.getPayDueBase();
+        List<PayDue> payDues = PaymentRepository.getPayDueBase();
         if (payDues.isEmpty()) {
             logger.info("No list of PayDues in Base");
             return payDues;
@@ -27,11 +25,10 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
 
     @Override
     public PayDue getPayDueById(Long id) {
-        payDues.clear();
-        payDues = PaymentRepository.getPayDueBase();
+        List<PayDue> payDues = PaymentRepository.getPayDueBase();
         for (PayDue payDue : payDues) {
             if (payDue.getPayDueId() == id) {
-                logger.info("getPayDueById method completed. Get: " + payDue.toString());
+                logger.info("getPayDueById method completed. Get: " + payDue.getPayDueId());
                 return payDue;
             }
         }
@@ -40,24 +37,28 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
     }
 
     @Override
-    public void addPayDue(PayDue payDue) {
+    public void addPayDue(PayDue payDueToAdd) {
         Long newId = PaymentRepository.getNextId();
         logger.info("Adding payDue with new Id: " + newId.toString());
-        PaymentRepository.addPayDueToBase(new PayDue(
+        PayDue payDueAdded = new PayDue(
                 newId,
-                payDue.getWorker(),
-                payDue.getDaysOfWork(),
-                payDue.getDaysOfDelegation(),
-                payDue.getBilledMonthYear(),
-                payDue.getPaymentPerDay()
-        ));
-        logger.info("New payDue id: " + payDue.toString() + " successfully added");
+                payDueToAdd.getWorker(),
+                payDueToAdd.getDaysOfWork(),
+                payDueToAdd.getDaysOfDelegation(),
+                payDueToAdd.getBilledMonthYear(),
+                payDueToAdd.getPaymentPerDay()
+        );
+        if (PaymentRepository.addPayDueToBase(payDueAdded)) {
+            logger.info("New payDue: " + payDueAdded.toString() + " successfully added");
+        } else {
+            logger.info("The payDue: " + payDueAdded.toString() + " not successfully added");
+        }
     }
 
     @Override
     public PayDue updatePayDue(PayDue payDueToUpdate) {
-        payDues.clear();
-        payDues = PaymentRepository.getPayDueBase();
+        logger.info("payDue to update: " + payDueToUpdate.toString());
+        List<PayDue> payDues = PaymentRepository.getPayDueBase();
         if (payDues.stream().anyMatch(o -> o.getPayDueId().equals(payDueToUpdate.getPayDueId()))) {
             logger.info("Found payDue with id: " + payDueToUpdate.getPayDueId());
             int index = payDues.indexOf(PaymentRepository.findPayDueById(payDueToUpdate.getPayDueId()));
@@ -71,8 +72,7 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
 
     @Override
     public PayDue DeletePayDueById(Long idOfPayDueToDelete) {
-        payDues.clear();
-        payDues = PaymentRepository.getPayDueBase();
+        List<PayDue> payDues = PaymentRepository.getPayDueBase();
         if (payDues.stream().anyMatch(o -> o.getPayDueId().equals((long) idOfPayDueToDelete))) {
             payDues.remove(PaymentRepository.findPayDueById(idOfPayDueToDelete));
             logger.info("Deleting payDue with id: " + idOfPayDueToDelete);

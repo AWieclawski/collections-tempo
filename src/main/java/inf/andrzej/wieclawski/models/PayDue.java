@@ -1,9 +1,7 @@
 package inf.andrzej.wieclawski.models;
 
-import inf.andrzej.wieclawski.models.Employee;
-
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 
 public class PayDue {
@@ -12,16 +10,29 @@ public class PayDue {
     private Employee worker;
     private Integer daysOfWork;
     private Integer daysOfDelegation;
-    private LocalDate billedMonthYear;
+    private YearMonth billedMonthYear;
     private BigDecimal paymentPerDay;
 
     public PayDue(Long payDueId,
                   Employee worker,
                   Integer daysOfWork,
                   Integer daysOfDelegation,
-                  LocalDate billedMonthYear,
+                  YearMonth billedMonthYear,
                   BigDecimal paymentPerDay) {
         this.payDueId = payDueId;
+        this.worker = worker;
+        this.daysOfWork = daysOfWork;
+        this.daysOfDelegation = daysOfDelegation;
+        this.billedMonthYear = billedMonthYear;
+        this.paymentPerDay = paymentPerDay;
+    }
+
+    // Constructor for adding
+    public PayDue(Employee worker,
+                  Integer daysOfWork,
+                  Integer daysOfDelegation,
+                  YearMonth billedMonthYear,
+                  BigDecimal paymentPerDay) {
         this.worker = worker;
         this.daysOfWork = daysOfWork;
         this.daysOfDelegation = daysOfDelegation;
@@ -61,11 +72,11 @@ public class PayDue {
         this.daysOfDelegation = daysOfDelegation;
     }
 
-    public LocalDate getBilledMonthYear() {
+    public YearMonth getBilledMonthYear() {
         return billedMonthYear;
     }
 
-    public void setBilledMonthYear(LocalDate billedMonthYear) {
+    public void setBilledMonthYear(YearMonth billedMonthYear) {
         this.billedMonthYear = billedMonthYear;
     }
 
@@ -81,7 +92,7 @@ public class PayDue {
     public String toString() {
         return "PayDue{" +
                 "payDueId=" + payDueId +
-                ", worker=" + worker +
+                ", worker=" + worker.getName() + " " + worker.getSurname() +
                 ", daysOfWork=" + daysOfWork +
                 ", daysOfDelegation=" + daysOfDelegation +
                 ", billedMonthYear=" + billedMonthYear.format(DateTimeFormatter.ofPattern("MM-yyyy")) +
