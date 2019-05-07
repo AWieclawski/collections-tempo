@@ -71,14 +71,14 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
     }
 
     @Override
-    public PayDue DeletePayDueById(Long idOfPayDueToDelete) {
+    public boolean DeletePayDueById(Long idOfPayDueToDelete) {
         List<PayDue> payDues = PaymentRepositoryUsingLists.getPayDuesBase();
         if (payDues.stream().anyMatch(o -> o.getPayDueId().equals((long) idOfPayDueToDelete))) {
             payDues.remove(PaymentRepositoryUsingLists.findPayDueById(idOfPayDueToDelete));
             logger.info("Deleting payDue with id: " + idOfPayDueToDelete);
-            return PaymentRepositoryUsingLists.findPayDueById(idOfPayDueToDelete);
+            return true;
         }
         logger.info("Can not delete payDue with id: " + idOfPayDueToDelete);
-        return PaymentRepositoryUsingLists.findPayDueById(idOfPayDueToDelete);
+        return false;
     }
 }

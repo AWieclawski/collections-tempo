@@ -14,6 +14,6 @@ public interface PaymentServiceDao {
 
     PayDue updatePayDue(PayDue payDue);
 
-    PayDue DeletePayDueById(Long id);
+    boolean DeletePayDueById(Long id);
 
 }
