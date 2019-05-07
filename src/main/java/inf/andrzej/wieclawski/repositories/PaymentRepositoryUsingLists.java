@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class PaymentRepository {
+public class PaymentRepositoryUsingLists {
 
-    private static Logger logger = Logger.getLogger(PaymentRepository.class.getName());
+    private static Logger logger = Logger.getLogger(PaymentRepositoryUsingLists.class.getName());
 
     private static List<PayDue> baseOfPayDues = new ArrayList<>();
     private static List<Employee> lisOfWorkers = new ArrayList<>();
 
-    public static List<PayDue> getPayDueBase() {
+    public static List<PayDue> getPayDuesBase() {
         logger.info("Before fillPayDueBaseWithDefaults baseOfPayDues. Size: " + baseOfPayDues.size());
         if (baseOfPayDues.size() == 0) {
             fillPayDueBaseWithDefaults();
@@ -152,7 +152,7 @@ public class PaymentRepository {
     public static boolean addPayDueToBase(PayDue payDueToAdd) {
         boolean status = false;
         logger.info("baseOfPayDues size before addPayDueToBase: " + baseOfPayDues.size());
-        if (getPayDueBase().stream().noneMatch(o -> o.getPayDueId().equals(payDueToAdd.getPayDueId()))) {
+        if (getPayDuesBase().stream().noneMatch(o -> o.getPayDueId().equals(payDueToAdd.getPayDueId()))) {
             baseOfPayDues.add(payDueToAdd);
             logger.info("baseOfPayDues size after successful addPayDueToBase: " + baseOfPayDues.size());
             status=true;
@@ -170,7 +170,7 @@ public class PaymentRepository {
     }
 
     public static PayDue findPayDueById(Long idOfPayDueToFind) {
-
+        logger.info("findPayDueById looking for id: " + idOfPayDueToFind);
         return
                 baseOfPayDues.stream()
                         .filter(payDue -> (idOfPayDueToFind).equals(payDue.getPayDueId()))

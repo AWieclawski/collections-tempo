@@ -27,7 +27,7 @@ public class PayDue {
         this.paymentPerDay = paymentPerDay;
     }
 
-    // Constructor for adding
+    // Constructor for adding payDue functionality
     public PayDue(Employee worker,
                   Integer daysOfWork,
                   Integer daysOfDelegation,

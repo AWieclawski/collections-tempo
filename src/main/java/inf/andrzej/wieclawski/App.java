@@ -16,6 +16,8 @@ public class App {
 
     public static void main(String[] args) {
 
+        long startTime = System.nanoTime();
+
         PaymentServiceDao dao = new PaymentServiceDaoBean();
 
         List<PayDue> listOfPayDues = dao.getPayDueList();
@@ -46,6 +48,10 @@ public class App {
         dao.DeletePayDueById(randomId);
         payDueListToPrint(dao.getPayDueList());
 
+
+        long endTime = System.nanoTime();
+        long listsDuration = (endTime - startTime);
+        System.out.printf("Time of main method operations: %s, using lists from PaymentRepositoryUsingLists. ",listsDuration);
 
     }
 
