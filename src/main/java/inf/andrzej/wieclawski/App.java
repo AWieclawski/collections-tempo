@@ -1,9 +1,7 @@
 package inf.andrzej.wieclawski;
 
-import inf.andrzej.wieclawski.models.PayDue;
 import inf.andrzej.wieclawski.services.TestOfOperations;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 public class App {
@@ -12,16 +10,20 @@ public class App {
 
     public static void main(String[] args) {
 
-        System.out.printf("Time of main method operations: %s, using lists from PaymentRepositoryUsingLists. "
-                , TestOfOperations.testOfListOperations());
+        Long timeOfListOperations = TestOfOperations.testOfListOperations();
+        Long timeOfMapOperations = TestOfOperations.testOfMapOperations();
 
-    }
+        System.out.printf("Time of main method operations: %s, using lists from PaymentRepositoryUsingLists. \n"
+                , timeOfListOperations);
 
-    private static void payDueListToPrint(List<PayDue> listToPrint) {
+        System.out.printf("Time of main method operations: %s, using lists from PaymentRepositoryUsingMaps. \n"
+                , timeOfMapOperations);
 
-        logger.info("payDueListToPrint size: " + listToPrint.size());
-        for (PayDue thisPayDue : listToPrint) {
-            System.out.println(thisPayDue.toString());
+        if (timeOfListOperations > timeOfMapOperations) {
+            System.out.println("timeOfListOperations IS LONGER than timeOfMapOperations");
+        } else {
+            System.out.println("timeOfListOperations IS SHORTER than timeOfMapOperations");
         }
     }
+
 }

@@ -1,6 +1,5 @@
 package inf.andrzej.wieclawski.repositories;
 
-import inf.andrzej.wieclawski.models.Employee;
 import inf.andrzej.wieclawski.models.PayDue;
 
 import java.util.HashMap;
@@ -10,13 +9,12 @@ import java.util.logging.Logger;
 public class PaymentRepositoryUsingMaps {
 
     private static Map<Long, PayDue> baseOfPayDuesMap = new HashMap<>();
-    private static Map<Long, Employee> ListOfWorkersMap = new HashMap<>();
 
     private static Logger logger = Logger.getLogger(PaymentRepositoryUsingMaps.class.getName());
 
     public static Map<Long, PayDue> getPayDuesBaseMap() {
 
-        if (baseOfPayDuesMap.size() != 0) {
+        if (baseOfPayDuesMap.size() == 0) {
             logger.info("Before fillPayDuesBaseMapWithDefaults baseOfPayDuesMap size: " + baseOfPayDuesMap.size());
             fillPayDuesBaseMapWithDefaults();
         } else {
@@ -30,6 +28,8 @@ public class PaymentRepositoryUsingMaps {
         for (PayDue payDue : PaymentRepository.getRepositoryList()) {
             baseOfPayDuesMap.put(payDue.getPayDueId(), payDue);
         }
+        logger.info("After fillPayDuesBaseMapWithDefaults baseOfPayDuesMap size: "
+                + baseOfPayDuesMap.size());
     }
 
     public static boolean addPayDueToBaseMap(PayDue payDueToAdd) {
