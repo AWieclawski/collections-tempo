@@ -10,12 +10,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaymentRepository {
+
+class PaymentRepository {
 
     private static List<PayDue> basePayDueRepository = new ArrayList<>();
     private static List<Employee> baseWorkerRepository = new ArrayList<>();
 
-    public static List<PayDue> getRepositoryList() {
+    static List<PayDue> getRepositoryList() {
+        baseWorkerRepository.clear();
+        basePayDueRepository.clear();
+
         // Employee(Long workerId, String name, String surname, String workerTaxId, LocalDate dateOfBirth)
 
         Employee worker1 = new Employee(1L, "name1", "surname1", "TaxId001",
@@ -111,7 +115,7 @@ public class PaymentRepository {
                     YearMonth.parse("10-2019", DateTimeFormatter.ofPattern("MM-yyyy")),
                     BigDecimal.valueOf(140)
             );
-            basePayDueRepository.add(payDue4);
+            basePayDueRepository.add(payDue10);
             count++;
 
             PayDue payDue11 = new PayDue(

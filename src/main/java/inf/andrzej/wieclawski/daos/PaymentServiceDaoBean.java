@@ -34,48 +34,59 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
                 return payDue;
             }
         }
-        logger.info("getPayDueById method have not found any payDue. ");
+        logger.info("getPayDueById method have not found any payDue with id: " + id);
         return null;
     }
 
     @Override
-    public void addPayDue(PayDue payDueToAdd) {
+    public PayDue addPayDue(PayDue payDueToAdd) {
         Long newId = PaymentRepositoryUsingLists.getNextId();
         logger.info("Adding payDue with new Id: " + newId.toString());
-        PayDue payDueAdded = new PayDue(
-                newId,
-                payDueToAdd.getWorker(),
-                payDueToAdd.getDaysOfWork(),
-                payDueToAdd.getDaysOfDelegation(),
-                payDueToAdd.getBilledMonthYear(),
-                payDueToAdd.getPaymentPerDay()
-        );
-        if (PaymentRepositoryUsingLists.addPayDueToBase(payDueAdded)) {
-            logger.info("New payDue: " + payDueAdded.toString()
-                    + " successfully added to list");
+        if (payDueToAdd != null) {
+            PayDue payDueAdded = new PayDue(
+                    newId,
+                    payDueToAdd.getWorker(),
+                    payDueToAdd.getDaysOfWork(),
+                    payDueToAdd.getDaysOfDelegation(),
+                    payDueToAdd.getBilledMonthYear(),
+                    payDueToAdd.getPaymentPerDay()
+            );
+            if (PaymentRepositoryUsingLists.addPayDueToBase(payDueAdded)) {
+                logger.info("New payDue: " + payDueAdded.toString()
+                        + " successfully added to list");
+                return payDueAdded;
+            } else {
+                logger.info("The payDue: " + payDueAdded.toString()
+                        + " not successfully added to list");
+                return null;
+            }
         } else {
-            logger.info("The payDue: " + payDueAdded.toString()
-                    + " not successfully added to list");
+            logger.info("addPayDue is null ");
+            return null;
         }
     }
 
     @Override
     public boolean updatePayDue(PayDue payDueToUpdate) {
-        logger.info("payDue to update: " + payDueToUpdate.toString());
-        List<PayDue> payDues = PaymentRepositoryUsingLists.getPayDuesBase();
-        if (payDues.stream().anyMatch(o -> o.getPayDueId().equals(payDueToUpdate.getPayDueId()))) {
-            logger.info("Found and updated payDue with id: " + payDueToUpdate.getPayDueId());
-            int index = payDues.indexOf(PaymentRepositoryUsingLists.findPayDueById(payDueToUpdate.getPayDueId()));
-            PaymentRepositoryUsingLists.getPayDuesBase().set(index, payDueToUpdate);
-            logger.info("Updated payDue with id: " + payDueToUpdate.getPayDueId());
-            return true;
+        if (payDueToUpdate != null) {
+            logger.info("payDue to update: " + payDueToUpdate.toString());
+            List<PayDue> payDues = PaymentRepositoryUsingLists.getPayDuesBase();
+            if (payDues.stream().anyMatch(o -> o.getPayDueId().equals(payDueToUpdate.getPayDueId()))) {
+                logger.info("Found and updated payDue with id: " + payDueToUpdate.getPayDueId());
+                int index = payDues.indexOf(PaymentRepositoryUsingLists.findPayDueById(payDueToUpdate.getPayDueId()));
+                PaymentRepositoryUsingLists.getPayDuesBase().set(index, payDueToUpdate);
+                logger.info("Updated payDue with id: " + payDueToUpdate.getPayDueId());
+                return true;
+            }
+            logger.info("Not updated payDue with id: " + payDueToUpdate.getPayDueId());
+            return false;
         }
-        logger.info("Not updated payDue with id: " + payDueToUpdate.getPayDueId());
+        logger.info("Not updated. payDue is empty ");
         return false;
     }
 
     @Override
-    public boolean DeletePayDueById(Long idOfPayDueToDelete) {
+    public boolean deletePayDueById(Long idOfPayDueToDelete) {
         List<PayDue> payDues = PaymentRepositoryUsingLists.getPayDuesBase();
         if (payDues.stream().anyMatch(o -> o.getPayDueId().equals((long) idOfPayDueToDelete))) {
             payDues.remove(PaymentRepositoryUsingLists.findPayDueById(idOfPayDueToDelete));
@@ -88,14 +99,13 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
 
     @Override
     public Map<Long, PayDue> getPayDueMap() {
-        Map<Long, PayDue> payDueMap = PaymentRepositoryUsingMaps.getPayDuesBaseMap();
-        if (payDueMap.size() == 0) {
+        Map<Long, PayDue> payDueMapToGet = PaymentRepositoryUsingMaps.getPayDuesBaseMap();
+        if (payDueMapToGet.size() == 0) {
             logger.info("No map of PayDues in Base");
-            return payDueMap;
-        } else {
-            logger.info("No map of PayDues in Base");
+            return payDueMapToGet;
         }
-        return payDueMap;
+        logger.info("PayDues map in Base: " + payDueMapToGet.size());
+        return payDueMapToGet;
     }
 
     @Override
@@ -113,40 +123,51 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
     }
 
     @Override
-    public void addPayDueToMap(PayDue payDueToAddInMap) {
+    public PayDue addPayDueToMap(PayDue payDueToAddInMap) {
         Long newKeyId = PaymentRepositoryUsingMaps.getNextIdInMap();
         logger.info("Adding payDue with new key: " + newKeyId.toString());
-        PayDue payDueAdded = new PayDue(
-                newKeyId,
-                payDueToAddInMap.getWorker(),
-                payDueToAddInMap.getDaysOfWork(),
-                payDueToAddInMap.getDaysOfDelegation(),
-                payDueToAddInMap.getBilledMonthYear(),
-                payDueToAddInMap.getPaymentPerDay()
-        );
-        if (PaymentRepositoryUsingMaps.addPayDueToBaseMap(payDueToAddInMap)) {
-            logger.info("New payDue: " + payDueToAddInMap.toString()
-                    + " successfully added to map");
+        if (payDueToAddInMap != null) {
+            PayDue payDueAdded = new PayDue(
+                    newKeyId,
+                    payDueToAddInMap.getWorker(),
+                    payDueToAddInMap.getDaysOfWork(),
+                    payDueToAddInMap.getDaysOfDelegation(),
+                    payDueToAddInMap.getBilledMonthYear(),
+                    payDueToAddInMap.getPaymentPerDay()
+            );
+            if (PaymentRepositoryUsingMaps.addPayDueToBaseMap(payDueAdded)) {
+                logger.info("New payDueAdded: " + payDueAdded.toString()
+                        + " successfully added to map");
+                return payDueAdded;
+            } else {
+                logger.info("The payDue: " + payDueToAddInMap.toString()
+                        + " not successfully added to map");
+                return null;
+            }
         } else {
-            logger.info("The payDue: " + payDueAdded.toString()
-                    + " not successfully added to map");
+            logger.info("payDueToAddInMap is null ");
         }
+        return null;
     }
 
     @Override
     public boolean updatePayDueMap(PayDue payDueToUpdate) {
-        Map<Long, PayDue> payDueMap = PaymentRepositoryUsingMaps.getPayDuesBaseMap();
-        if (payDueMap.containsKey(payDueToUpdate.getPayDueId())) {
-            logger.info("Found and updated payDue with key: " + payDueToUpdate.getPayDueId());
-            payDueMap.put(payDueToUpdate.getPayDueId(), payDueToUpdate);
-            return true;
+        if (payDueToUpdate != null) {
+            Map<Long, PayDue> payDueMap = PaymentRepositoryUsingMaps.getPayDuesBaseMap();
+            if (payDueMap.containsKey(payDueToUpdate.getPayDueId())) {
+                logger.info("Found and updated payDue with key: " + payDueToUpdate.getPayDueId());
+                payDueMap.put(payDueToUpdate.getPayDueId(), payDueToUpdate);
+                return true;
+            }
+            logger.info("Not updated payDue with key: " + payDueToUpdate.getPayDueId());
+            return false;
         }
-        logger.info("Not updated payDue with key: " + payDueToUpdate.getPayDueId());
+        logger.info("Not updated. payDueToUpdate is null ");
         return false;
     }
 
     @Override
-    public boolean DeletePayDueByMapKey(Long keyToDelete) {
+    public boolean deletePayDueByMapKey(Long keyToDelete) {
         Map<Long, PayDue> payDueMap = PaymentRepositoryUsingMaps.getPayDuesBaseMap();
         if (payDueMap.containsKey(keyToDelete)) {
             logger.info("Found and deleted payDue with key: " + keyToDelete);

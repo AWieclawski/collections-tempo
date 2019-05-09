@@ -11,20 +11,20 @@ public interface PaymentServiceDao {
 
     PayDue getPayDueById(Long id);
 
-    void addPayDue(PayDue payDue);
+    PayDue addPayDue(PayDue payDue);
 
     boolean updatePayDue(PayDue payDue);
 
-    boolean DeletePayDueById(Long id);
+    boolean deletePayDueById(Long id);
 
     Map<Long, PayDue> getPayDueMap();
 
     PayDue getPayDueByMapKey(Long key);
 
-    void addPayDueToMap(PayDue payDue);
+    PayDue addPayDueToMap(PayDue payDue);
 
     boolean updatePayDueMap(PayDue payDue);
 
-    boolean DeletePayDueByMapKey(Long key);
+    boolean deletePayDueByMapKey(Long key);
 
 }

@@ -14,23 +14,27 @@ public class PaymentRepositoryUsingLists {
     private static List<PayDue> baseOfPayDues = new ArrayList<>();
 
     public static List<PayDue> getPayDuesBase() {
-        logger.info("Before fillPayDuesBaseWithDefaults baseOfPayDues. Size: " + baseOfPayDues.size());
+//        logger.info("Before fillPayDuesBaseWithDefaults baseOfPayDues. Size: " + baseOfPayDues.size());
         if (baseOfPayDues.size() == 0) {
             fillPayDuesBaseWithDefaults();
-            logger.info("fillPayDuesBaseWithDefaults initialised baseOfPayDues. Size: " + baseOfPayDues.size());
+//            logger.info("fillPayDuesBaseWithDefaults initialised baseOfPayDues. Size: " + baseOfPayDues.size());
         } else {
-            logger.info("baseOfPayDues was already initialised. Size: " + baseOfPayDues.size());
+//            logger.info("baseOfPayDues was already initialised. Size: " + baseOfPayDues.size());
         }
         logger.info("Return baseOfPayDues. Size: " + baseOfPayDues.size());
         return baseOfPayDues;
     }
 
     private static void fillPayDuesBaseWithDefaults() {
-        baseOfPayDues.addAll(PaymentRepository.getRepositoryList());
+        List<PayDue> payDueListFromRepository = null;
+        payDueListFromRepository = PaymentRepository.getRepositoryList();
+//        logger.info("Before fillPayDuesBaseMapWithDefaults PaymentRepository.getRepositoryList() size: "
+//                + payDueListFromRepository.size());
+        baseOfPayDues.addAll(payDueListFromRepository);
     }
 
     public static boolean addPayDueToBase(PayDue payDueToAdd) {
-        logger.info("baseOfPayDues size before addPayDueToBase: " + baseOfPayDues.size());
+//        logger.info("baseOfPayDues size before addPayDueToBase: " + baseOfPayDues.size());
         if (checkIfPayDueNotExistsInBaseOfPayDues(payDueToAdd)) {
             baseOfPayDues.add(payDueToAdd);
             logger.info("baseOfPayDues size after successful addPayDueToBase: " + baseOfPayDues.size());
@@ -45,10 +49,12 @@ public class PaymentRepositoryUsingLists {
         if (checkIfMaxIdExistsInBaseOfPayDues()) {
             PayDue payDueWithMaxId = baseOfPayDues.stream()
                     .max(Comparator.comparing(PayDue::getPayDueId))
-                    .get();
-            logger.info("getNextId id: " + payDueWithMaxId.getPayDueId() + 1L);
-            return payDueWithMaxId.getPayDueId() + 1L;
+                    .get(); // isPresent checked by checkIfMaxIdExistsInBaseOfPayDues
+            Long newIdFound = 1L + payDueWithMaxId.getPayDueId();
+            logger.info("getNextId found new id: " + newIdFound);
+            return newIdFound;
         }
+        logger.info("getNextId not found max id. New id: " + 1L);
         return 1L; // supposed Map is empty
     }
 

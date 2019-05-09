@@ -2,6 +2,7 @@ package inf.andrzej.wieclawski;
 
 import inf.andrzej.wieclawski.services.TestOfOperations;
 
+import java.text.DecimalFormat;
 import java.util.logging.Logger;
 
 public class App {
@@ -20,9 +21,11 @@ public class App {
                 , timeOfMapOperations);
 
         if (timeOfListOperations > timeOfMapOperations) {
-            System.out.println("timeOfListOperations IS LONGER than timeOfMapOperations");
+            System.out.printf("timeOfListOperations IS LONGER than timeOfMapOperations. %s percent of timeOfMapOperations\n"
+                    , new DecimalFormat("#0.00").format(((double) timeOfListOperations / (double) timeOfMapOperations) * 100.00));
         } else {
-            System.out.println("timeOfListOperations IS SHORTER than timeOfMapOperations");
+            System.out.printf("timeOfListOperations IS SHORTER than timeOfMapOperations. %s percent of timeOfMapOperations\n"
+                    , new DecimalFormat("#0.00").format(((double) timeOfListOperations / (double) timeOfMapOperations) * 100.00));
         }
     }
 
