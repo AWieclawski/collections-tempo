@@ -9,13 +9,13 @@ public interface PaymentServiceDao {
 
     List<PayDue> getPayDueList();
 
-    PayDue getPayDueById(Long id);
+    PayDue getPayDueByIdList(Long id);
 
-    PayDue addPayDue(PayDue payDue);
+    PayDue addPayDueList(PayDue payDue);
 
-    boolean updatePayDue(PayDue payDue);
+    boolean updatePayDueList(PayDue payDue);
 
-    boolean deletePayDueById(Long id);
+    boolean deletePayDueByIdList(Long id);
 
     Map<Long, PayDue> getPayDueMap();
 

@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class PaymentRepositoryUsingMaps {
+public class PaymentRepositoryUsingMap {
 
     private static Map<Long, PayDue> baseOfPayDuesMap = new HashMap<>();
 
-    private static Logger logger = Logger.getLogger(PaymentRepositoryUsingMaps.class.getName());
+    private static Logger logger = Logger.getLogger(PaymentRepositoryUsingMap.class.getName());
 
     public static Map<Long, PayDue> getPayDuesBaseMap() {
 //        logger.info("Before fillPayDuesBaseWithDefaults baseOfPayDues size: " + baseOfPayDuesMap.size());
@@ -21,7 +21,7 @@ public class PaymentRepositoryUsingMaps {
         } else {
 //            logger.info("baseOfPayDuesMap already initialised size: " + baseOfPayDuesMap.size());
         }
-        logger.info("Return baseOfPayDuesMap size: " + baseOfPayDuesMap.size());
+//        logger.info("Return baseOfPayDuesMap size: " + baseOfPayDuesMap.size());
         return baseOfPayDuesMap;
     }
 
@@ -33,17 +33,18 @@ public class PaymentRepositoryUsingMaps {
         for (PayDue payDueInMap : payDueListToFill) {
             baseOfPayDuesMap.put(payDueInMap.getPayDueId(), payDueInMap);
         }
-        logger.info("After fillPayDuesBaseMapWithDefaults baseOfPayDuesMap size: "
-                + baseOfPayDuesMap.size());
+//        logger.info("After fillPayDuesBaseMapWithDefaults baseOfPayDuesMap size: "
+//                + baseOfPayDuesMap.size());
     }
 
     public static boolean addPayDueToBaseMap(PayDue payDueToAdd) {
-//        logger.info("baseOfPayDuesMap size before addPayDueToBase: " + baseOfPayDuesMap.size());
+//        logger.info("baseOfPayDuesMap size before addPayDueToBaseList: " + baseOfPayDuesMap.size());
         if (checkIfPayDueNotExistsInBaseOfPayDuesMap(payDueToAdd)) {
             baseOfPayDuesMap.put(payDueToAdd.getPayDueId(), payDueToAdd);
             return true;
         }
-        logger.info("baseOfPayDuesMap size after addPayDueToBase: " + baseOfPayDuesMap.size());
+        logger.info("Ops! PayDueExistsInBaseOfPayDuesMap baseOfPayDuesMap size after addPayDueToBaseList: "
+                + baseOfPayDuesMap.size());
         return false;
     }
 

@@ -14,10 +14,10 @@ public class App {
         Long timeOfListOperations = TestOfOperations.testOfListOperations();
         Long timeOfMapOperations = TestOfOperations.testOfMapOperations();
 
-        System.out.printf("Time of main method operations: %s, using lists from PaymentRepositoryUsingLists. \n"
+        System.out.printf("Time of main method operations: %s, using lists from PaymentRepositoryUsingList. \n"
                 , timeOfListOperations);
 
-        System.out.printf("Time of main method operations: %s, using lists from PaymentRepositoryUsingMaps. \n"
+        System.out.printf("Time of main method operations: %s, using lists from PaymentRepositoryUsingMap. \n"
                 , timeOfMapOperations);
 
         if (timeOfListOperations > timeOfMapOperations) {

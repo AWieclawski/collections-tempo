@@ -33,31 +33,34 @@ public class TestOfOperations {
 
         for (int i = 0; i < iterator; i++) {
             randomId = (long) (Math.random() * listOfPayDues.size() + 1);
-            PayDue payDueToFind = dao.getPayDueById(randomId);
-            if (payDueToFind != null) {
-                System.out.printf("For id %s, \nfound payDueToFind: %s", randomId, payDueToFind.toString());
-            } else {
-                System.out.println("Fail! payDueToFind not found. Searched Id: " + randomId);
-            }
             PayDue payDueToAdd = getNewPayDueInstance();
-            PayDue payDueToAddResult = dao.addPayDue(payDueToAdd);
+            PayDue payDueToAddResult = dao.addPayDueList(payDueToAdd);
             if (payDueToAddResult != null) {
-                System.out.printf("payDueToAdd success, added: %s\n", payDueToAddResult.toString());
+                System.out.printf("payDueToAdd success, \nadded: %s\n", payDueToAddResult.toString());
             } else {
                 System.out.printf("Fail! payDueToAdd with id %s not added.\n", randomId);
             }
+
+            PayDue payDueToFind = dao.getPayDueByIdList(randomId);
+            if (payDueToFind != null) {
+                System.out.printf("For id %s, \npayDueToFind success, found: %s\n", randomId, payDueToFind.toString());
+            } else {
+                System.out.printf("For id %s, \nFail! payDueToFind not found .\n", randomId);
+            }
+
             PayDue payDueToUpdate = getPayDueToUpdate(payDueToFind);
-            if (dao.updatePayDue(payDueToUpdate)) {
+            if (dao.updatePayDueList(payDueToUpdate)) {
                 System.out.printf("payDueToUpdate with id %s success, \nupdated: %s \n"
                         , randomId, payDueToUpdate.toString());
             } else {
                 System.out.println("Fail! payDueToUpdate not updated. Searched Id: " + randomId);
             }
-            if (dao.deletePayDueById(randomId)) {
+
+            if (dao.deletePayDueByIdList(randomId)) {
                 System.out.printf("Deleting from list payDue with id %s operation success \n"
                         , randomId);
             } else {
-                System.out.println("deletePayDueById not successful. Searched Id: " + randomId);
+                System.out.println("deletePayDueByIdList not successful. Searched Id: " + randomId);
             }
         }
         System.out.println("*** Final payDueListToPrint:");
@@ -81,33 +84,37 @@ public class TestOfOperations {
 
         for (int i = 0; i < iterator; i++) {
             randomId = (long) (Math.random() * payDueMap.size() + 1);
-            PayDue payDueToFind = dao.getPayDueByMapKey(randomId);
-
-            if (payDueToFind != null) {
-                System.out.println("payDueToFind in map success. \npayDueToFind: " + payDueToFind.toString());
-            } else {
-                System.out.println("Fail payDueToFind. Searched id: " + randomId);
-            }
-
             PayDue payDueToAdd = getNewPayDueInstance();
             PayDue payDueAddingResult = dao.addPayDueToMap(payDueToAdd);
             if (payDueAddingResult != null) {
-                System.out.println("payDueToAdd in map success. \npayDueToAdd: " + payDueAddingResult.toString());
+                System.out.printf("payDueToAdd in map success. \npayDueToAdd: %s\n"
+                        , payDueAddingResult.toString());
             } else {
                 System.out.printf("Fail! payDueToAdd in map with id %s not added.\n", randomId);
             }
 
+            PayDue payDueToFind = dao.getPayDueByMapKey(randomId);
+
+            if (payDueToFind != null) {
+                System.out.printf("For id %s, \npayDueToFind in map success. \npayDueToFind: %s\n"
+                        , randomId, payDueToFind.toString());
+            } else {
+                System.out.printf("For id %s, \nFail! payDueToFind not found in map. \n", randomId);
+            }
+
             PayDue payDueToUpdate = getPayDueToUpdate(payDueToFind);
             if (dao.updatePayDueMap(payDueToUpdate)) {
-                System.out.println("payDueToUpdate in map success. \npayDueToUpdate: " + payDueToUpdate.toString());
+                System.out.printf("payDueToUpdate in map success. \npayDueToUpdate: %s\n"
+                        , payDueToUpdate.toString());
             } else {
-                System.out.println("Fail! payDueToUpdate in map not successful. id: " + randomId);
+                System.out.printf("Fail! payDueToUpdate in map not successful. id: %s\n", randomId);
             }
 
             if (dao.deletePayDueByMapKey(randomId)) {
-                System.out.printf("Deleting payDue with id %s from map operation success \n", randomId);
+                System.out.printf("Deleting payDue with id %s from map operation success \n"
+                        , randomId);
             } else {
-                System.out.println("Fail! deletePayDueById from map not successful. id: " + randomId);
+                System.out.printf("Fail! deletePayDueByMapKey from map not successful. id: %s\n", randomId);
             }
         }
 
@@ -146,11 +153,19 @@ public class TestOfOperations {
 
     private static PayDue getPayDueToUpdate(PayDue payDueToOperate) {
         if (payDueToOperate != null) {
+            // Employee(Long workerId, String name, String surname, String workerTaxId, LocalDate dateOfBirth)
+
+            Employee updatedEmployee = new Employee(payDueToOperate.getWorker().getWorkerId()
+                    , payDueToOperate.getWorker().getName().concat("Updated")
+                    , payDueToOperate.getWorker().getSurname()
+                    , payDueToOperate.getWorker().getWorkerTaxId()
+                    , payDueToOperate.getWorker().getDateOfBirth()
+            );
 //            logger.info("getPayDueToUpdate payDueToOperate: " + payDueToOperate.toString());
             return new PayDue(
-                    payDueToOperate.getPayDueId(), payDueToOperate.getWorker(), payDueToOperate.getDaysOfWork(),
+                    payDueToOperate.getPayDueId(), updatedEmployee, payDueToOperate.getDaysOfWork(),
                     payDueToOperate.getDaysOfDelegation(), payDueToOperate.getBilledMonthYear(),
-                    BigDecimal.valueOf(100)
+                    payDueToOperate.getPaymentPerDay()
             );
         }
         return null;
