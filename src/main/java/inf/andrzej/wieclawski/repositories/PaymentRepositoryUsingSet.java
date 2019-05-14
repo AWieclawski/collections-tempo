@@ -23,12 +23,12 @@ public class PaymentRepositoryUsingSet {
         payDueSetBase.addAll(payDueListFromRepository);
     }
 
-    private static boolean addPayDueToSet(PayDue payDueToAdd) {
+    public static boolean addPayDueToSet(PayDue payDueToAdd) {
         payDueSetBase.add(payDueToAdd);
         return true;
     }
 
-    private static Long getMaxIdInSet() {
+    public static Long getMaxIdInSet() {
         if (payDueSetBase.stream()
                 .max(Comparator.comparing(PayDue::getPayDueId))
                 .isPresent()) {
@@ -38,12 +38,31 @@ public class PaymentRepositoryUsingSet {
         } else return null;
     }
 
-    private static PayDue findPayDueByIdInSet(Long idOdPayDueToFind) {
-        PayDue payDueToFind = Objects.requireNonNull(payDueSetBase.stream()
+    public static PayDue findPayDueByIdInSet(Long idOdPayDueToFind) {
+        return payDueSetBase.stream()
                 .filter(payDue -> (idOdPayDueToFind).equals(payDue.getPayDueId()))
                 .findAny()
-                .orElse(null)
-        );
-        return payDueToFind;
+                .orElse(null);
+    }
+
+    public static boolean updatePayDueIfExistsInSet(PayDue payDueToUpdateInSet) {
+        PayDue payDueToReplace = findPayDueByIdInSet(payDueToUpdateInSet.getPayDueId());
+        if (payDueSetBase.contains(payDueToReplace)) {
+            payDueSetBase.remove(payDueToReplace);// remove
+            payDueSetBase.add(payDueToUpdateInSet);
+            return true;
+        }
+        logger.info("Ops! Not updated payDue in set with id: " + payDueToUpdateInSet.getPayDueId());
+        return false;
+    }
+
+    public static boolean removePayDueByIdIfExistsInSet(Long payDueIdToRemoveInSet) {
+        PayDue payDueToRemoveInSet = findPayDueByIdInSet(payDueIdToRemoveInSet);
+        if (payDueSetBase.contains(payDueToRemoveInSet)) {
+            payDueSetBase.remove(payDueToRemoveInSet);// remove
+            return true;
+        }
+        logger.info("Ops! Not deleted payDue in set with id: " + payDueIdToRemoveInSet);
+        return false;
     }
 }

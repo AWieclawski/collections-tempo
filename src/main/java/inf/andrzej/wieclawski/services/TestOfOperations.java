@@ -53,7 +53,7 @@ public class TestOfOperations {
                 System.out.printf("payDueToUpdate with id %s success, \nupdated: %s \n"
                         , randomId, payDueToUpdate.toString());
             } else {
-                System.out.println("Fail! payDueToUpdate not updated. Searched Id: " + randomId);
+                System.out.printf("Fail! payDueToUpdate not updated. Searched Id: %s\n", randomId);
             }
 
             if (dao.deletePayDueByIdList(randomId)) {
@@ -107,14 +107,14 @@ public class TestOfOperations {
                 System.out.printf("payDueToUpdate in map success. \npayDueToUpdate: %s\n"
                         , payDueToUpdate.toString());
             } else {
-                System.out.printf("Fail! payDueToUpdate in map not successful. id: %s\n", randomId);
+                System.out.printf("Fail! payDueToUpdate in map not updated. id: %s\n", randomId);
             }
 
             if (dao.deletePayDueByMapKey(randomId)) {
                 System.out.printf("Deleting payDue with id %s from map operation success \n"
                         , randomId);
             } else {
-                System.out.printf("Fail! deletePayDueByMapKey from map not successful. id: %s\n", randomId);
+                System.out.printf("Fail! deletePayDueByMapKey from map not deleted. id: %s\n", randomId);
             }
         }
 

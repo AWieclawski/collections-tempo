@@ -4,6 +4,7 @@ import inf.andrzej.wieclawski.models.PayDue;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface PaymentServiceDao {
 
@@ -26,5 +27,16 @@ public interface PaymentServiceDao {
     boolean updatePayDueMap(PayDue payDue);
 
     boolean deletePayDueByMapKey(Long key);
+
+    Set<PayDue> getPayDueSet();
+
+    PayDue getPayDueByIdSet(Long id);
+
+    PayDue addPayDueSet(PayDue payDue);
+
+    boolean updatePayDueSet(PayDue payDue);
+
+    boolean deletePayDueByIdSet(Long id);
+
 
 }
