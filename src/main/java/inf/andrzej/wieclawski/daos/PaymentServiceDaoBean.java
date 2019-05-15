@@ -48,8 +48,8 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
     @Override
     public boolean updatePayDueList(PayDue payDueToUpdate) {
         if (payDueToUpdate != null) {
-            PaymentRepositoryUsingList.updatePayDueIfExistsInList(payDueToUpdate);
-            return true;
+            return PaymentRepositoryUsingList.updatePayDueIfExistsInList(payDueToUpdate);
+//            return true;
         }
         logger.info("Not updated. payDue is empty ");
         return false;
@@ -70,7 +70,7 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
     public Map<Long, PayDue> getPayDueMap() {
         Map<Long, PayDue> payDueMapToGet = PaymentRepositoryUsingMap.getPayDuesBaseMap();
         if (payDueMapToGet.size() == 0) {
-            logger.info("No map of PayDues in Base");
+            logger.info("Ops! PayDuesBaseMap is empty");
             return payDueMapToGet;
         }
         return payDueMapToGet;
@@ -81,7 +81,7 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
         if (PaymentRepositoryUsingMap.findPayDueByIdInMap(key).isPresent()) {
             return PaymentRepositoryUsingMap.findPayDueByIdInMap(key).get();
         }
-        logger.info("Ops! payDueIdToFindInMap is nor present " + key);
+        logger.info("Ops! payDueIdToFindInMap is not present " + key);
         return null;
     }
 
@@ -92,19 +92,17 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
         if (PaymentRepositoryUsingMap.addPayDueToBaseMap(payDueAdded)) {
             return payDueAdded;
         }
-        logger.info("The payDue: " + payDueToAddInMap
-                + " not successfully added to map");
+        logger.info("Ops! The payDue: " + payDueToAddInMap
+                + " not added to map");
         return null;
     }
 
     @Override
     public boolean updatePayDueMap(PayDue payDueToUpdateInMap) {
         if (payDueToUpdateInMap != null) {
-//            logger.info("Success! The payDueToUpdateInMap successfully updated in map \n"
-//                    + payDueToUpdateInMap);
             return PaymentRepositoryUsingMap.updatePayDueIfExistsInMap(payDueToUpdateInMap);
         }
-        logger.info("Ops! The payDueToUpdateInMap not successfully updated in map");
+        logger.info("Ops! The payDueToUpdateInMap not updated in map");
         return false;
     }
 
@@ -120,9 +118,8 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
     }
 
     @Override
-    public Set<PayDue> getPayDueSet() {
-        Set<PayDue> payDueSet = new HashSet<>();
-        payDueSet = PaymentRepositoryUsingSet.getPayDuesSetBase();
+    public SortedSet<PayDue> getPayDueSet() {
+        SortedSet<PayDue> payDueSet = PaymentRepositoryUsingSet.getPayDuesSetBase();
         if (payDueSet.isEmpty()) {
             logger.info("Ops! PayDuesSetBase is empty");
             return payDueSet;
@@ -132,16 +129,17 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
 
     @Override
     public PayDue getPayDueByIdSet(Long payDueIdToFindInSet) {
-        if (payDueIdToFindInSet < 1) {
+        if (payDueIdToFindInSet != null) {
             return PaymentRepositoryUsingSet.findPayDueByIdInSet(payDueIdToFindInSet);
         }
-        logger.info("Ops! payDueIdToFindInSet < 0 " + payDueIdToFindInSet);
+        logger.info("Ops! payDueIdToFindInSet not found " + payDueIdToFindInSet);
         return null;
     }
 
     @Override
     public PayDue addPayDueSet(PayDue payDueToAddInSet) {
         Long newIdInSet = PaymentRepositoryUsingSet.getMaxIdInSet();
+//        logger.info("newIdInSet: " + newIdInSet);
         PayDue payDueAdded = newPayDueToAddWithMaxId(payDueToAddInSet, newIdInSet);
         if (PaymentRepositoryUsingSet.addPayDueToSet(payDueAdded)) {
             return payDueAdded;
@@ -156,30 +154,30 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
         if (payDueToUpdateInSet != null) {
             return PaymentRepositoryUsingSet.updatePayDueIfExistsInSet(payDueToUpdateInSet);
         }
-        logger.info("Ops! The payDueToUpdateInSet not successfully updated in set");
+        logger.info("Ops! The payDueToUpdateInSet not updated in set " + payDueToUpdateInSet);
         return false;
     }
 
     @Override
     public boolean deletePayDueByIdSet(Long payDueIdToDeleteInSet) {
         if (payDueIdToDeleteInSet != null) {
+//            logger.info("deletePayDueByIdSet returns");
             return PaymentRepositoryUsingSet.removePayDueByIdIfExistsInSet(payDueIdToDeleteInSet);
         }
-        logger.info("Ops! The payDueToUpdateInSet not successfully updated in set");
+        logger.info("Ops! The payDueToUpdateInSet not updated in set, id: " + payDueIdToDeleteInSet);
         return false;
     }
 
     private PayDue newPayDueToAddWithMaxId(PayDue payDueReceived, Long newId) {
         if (payDueReceived != null) {
-            PayDue payDueAdded = new PayDue(
+            return new PayDue(
                     newId,
                     payDueReceived.getWorker(),
-                    payDueReceived.getDaysOfWork(),
                     payDueReceived.getDaysOfDelegation(),
+                    payDueReceived.getDaysOfWork(),
                     payDueReceived.getBilledMonthYear(),
                     payDueReceived.getPaymentPerDay()
             );
-            return payDueAdded;
         }
         logger.info("payDueToAddInMap is null ");
         return null;

@@ -31,7 +31,7 @@ public class PaymentRepositoryUsingList {
             payDueArrayListBase.add(payDueToAdd);
             return true;
         }
-        logger.info("Ops! payDueToAdd id exists in payDueArrayListBase. Size after not successful addPayDueToBaseList: "
+        logger.info("Ops! payDueToAdd id exists in payDueArrayListBase. Size : "
                 + payDueArrayListBase.size());
         return false;
     }
@@ -67,7 +67,7 @@ public class PaymentRepositoryUsingList {
         return false;
     }
 
-    // check to avoid duplicated data
+    // check to avoid duplicated data in payDueArrayListBase
     private static boolean checkIfPayDueNotExistsInBaseOfPayDues(PayDue payDue) {
         return getPayDuesBaseList().stream().noneMatch(o -> o.getPayDueId().equals(payDue.getPayDueId()));
     }

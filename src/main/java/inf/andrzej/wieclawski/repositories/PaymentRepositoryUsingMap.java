@@ -34,8 +34,8 @@ public class PaymentRepositoryUsingMap {
         return true;
     }
 
-    public static Optional<PayDue> findPayDueByIdInMap(Long payDueIdTFindInMap) {
-        return Optional.ofNullable(baseOfPayDuesMap.get(payDueIdTFindInMap));
+    public static Optional<PayDue> findPayDueByIdInMap(Long payDueIdToFindInMap) {
+        return Optional.ofNullable(baseOfPayDuesMap.get(payDueIdToFindInMap));
     }
 
     public static Long getNextIdInMap() {
