@@ -9,16 +9,14 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class OperationsManager {
 
     private static Logger logger = Logger.getLogger(OperationsManager.class.getName());
-    private static int iterator = 100; // iteration of data operation test
-    private static Long randomId = 0L;
     private static long startTime = 0L;
     private static long endTime = 0L;
 
@@ -32,44 +30,36 @@ public class OperationsManager {
         List<PayDue> listOfPayDues = dao.getPayDueList();
         payDueListToPrint(listOfPayDues);
 
-        for (int i = 0; i < iterator; i++) {
-            randomId = (long) (Math.random() * listOfPayDues.size() + 1);
+        for (Long iteratorOfTest : exampleListMaker()) {
             PayDue payDueToAdd = getNewPayDueInstance();
             PayDue payDueToAddResult = dao.addPayDueList(payDueToAdd);
             if (payDueToAddResult != null) {
                 System.out.printf("payDueToAdd success, \nadded: %s\n", payDueToAddResult.toString());
             } else {
-                System.out.printf("Fail! payDueToAdd with id %s not added.\n", randomId);
+                System.out.printf("Fail! payDueToAdd with id %s not added.\n", iteratorOfTest);
             }
-//            System.out.println("* Report after add: ");
-//            payDueListToPrint(listOfPayDues);
 
-            PayDue payDueToFind = dao.getPayDueByIdList(randomId);
+            PayDue payDueToFind = dao.getPayDueByIdList(iteratorOfTest);
             if (payDueToFind != null) {
-                System.out.printf("For id %s, \npayDueToFind success, found: %s\n", randomId, payDueToFind.toString());
+                System.out.printf("For id %s, \npayDueToFind success, found: %s\n", iteratorOfTest, payDueToFind.toString());
             } else {
-                System.out.printf("For id %s, \nFail! payDueToFind not found .\n", randomId);
+                System.out.printf("For id %s, \nFail! payDueToFind not found .\n", iteratorOfTest);
             }
 
             PayDue payDueToUpdate = getPayDueToUpdate(payDueToFind);
             if (dao.updatePayDueList(payDueToUpdate)) {
                 System.out.printf("payDueToUpdate with id %s success, \nupdated: %s \n"
-                        , randomId, payDueToUpdate);
+                        , iteratorOfTest, payDueToUpdate);
             } else {
-                System.out.printf("Fail! payDueToUpdate not updated. Searched Id: %s\n", randomId);
+                System.out.printf("Fail! payDueToUpdate not updated. Searched Id: %s\n", iteratorOfTest);
             }
-//            System.out.println("* Report after update: ");
-//            payDueListToPrint(listOfPayDues);
 
-
-            if (dao.deletePayDueByIdList(randomId)) {
+            if (dao.deletePayDueByIdList(iteratorOfTest)) {
                 System.out.printf("Deleting from list payDue with id %s operation success \n"
-                        , randomId);
+                        , iteratorOfTest);
             } else {
-                System.out.println("deletePayDueByIdList not successful. Searched Id: " + randomId);
+                System.out.println("deletePayDueByIdList not successful. Searched Id: " + iteratorOfTest);
             }
-//            System.out.println("* Report after delete: ");
-//            payDueListToPrint(listOfPayDues);
         }
         System.out.println("*** Final payDueListToPrint:");
         payDueListToPrint(dao.getPayDueList());
@@ -90,26 +80,23 @@ public class OperationsManager {
         System.out.println("*** Initial payDueMapToPrint: ");
         payDueMapToPrint(payDueMap);
 
-        for (int i = 0; i < iterator; i++) {
-            randomId = (long) (Math.random() * payDueMap.size() + 1);
+        for (Long iteratorOfTest : exampleListMaker()) {
             PayDue payDueToAdd = getNewPayDueInstance();
             PayDue payDueAddingResult = dao.addPayDueToMap(payDueToAdd);
             if (payDueAddingResult != null) {
                 System.out.printf("payDueToAdd in map success. \npayDueToAdd: %s\n"
                         , payDueAddingResult.toString());
             } else {
-                System.out.printf("Fail! payDueToAdd in map with id %s not added.\n", randomId);
+                System.out.printf("Fail! payDueToAdd in map with id %s not added.\n", iteratorOfTest);
             }
-//            System.out.println("* Report after add: ");
-//            payDueMapToPrint(payDueMap);
 
-            PayDue payDueToFind = dao.getPayDueByMapKey(randomId);
+            PayDue payDueToFind = dao.getPayDueByMapKey(iteratorOfTest);
 
             if (payDueToFind != null) {
                 System.out.printf("For id %s, \npayDueToFind in map success. \npayDueToFind: %s\n"
-                        , randomId, payDueToFind);
+                        , iteratorOfTest, payDueToFind);
             } else {
-                System.out.printf("For id %s, \nFail! payDueToFind not found in map. \n", randomId);
+                System.out.printf("For id %s, \nFail! payDueToFind not found in map. \n", iteratorOfTest);
             }
 
             PayDue payDueToUpdate = getPayDueToUpdate(payDueToFind);
@@ -117,19 +104,15 @@ public class OperationsManager {
                 System.out.printf("payDueToUpdate in map success. \npayDueToUpdate: %s\n"
                         , payDueToUpdate);
             } else {
-                System.out.printf("Fail! payDueToUpdate in map not updated. id: %s\n", randomId);
+                System.out.printf("Fail! payDueToUpdate in map not updated. id: %s\n", iteratorOfTest);
             }
-//            System.out.println("* Report after update: ");
-//            payDueMapToPrint(payDueMap);
 
-            if (dao.deletePayDueByMapKey(randomId)) {
+            if (dao.deletePayDueByMapKey(iteratorOfTest)) {
                 System.out.printf("Deleting payDue with id %s from map operation success \n"
-                        , randomId);
+                        , iteratorOfTest);
             } else {
-                System.out.printf("Fail! deletePayDueByMapKey from map not deleted. id: %s\n", randomId);
+                System.out.printf("Fail! deletePayDueByMapKey from map not deleted. id: %s\n", iteratorOfTest);
             }
-//            System.out.println("* Report after delete: ");
-//            payDueMapToPrint(payDueMap);
         }
 
         System.out.println("*** Final payDueMapToPrint: ");
@@ -151,26 +134,23 @@ public class OperationsManager {
         System.out.println("*** Initial payDueSetToPrint: " + payDueSet.size());
         payDueSetToPrint(payDueSet);
 
-        for (int i = 0; i < iterator; i++) {
-            randomId = (long) (Math.random() * payDueSet.size() + 1);
+        for (Long iteratorOfTest : exampleListMaker()) {
             PayDue payDueToAdd = getNewPayDueInstance();
             PayDue payDueAddingResult = dao.addPayDueSet(payDueToAdd);
             if (payDueAddingResult != null) {
                 System.out.printf("payDueToAdd in set success. \npayDueToAdd: %s\n"
                         , payDueAddingResult);
             } else {
-                System.out.printf("Fail! payDueToAdd in set with id %s not added.\n", randomId);
+                System.out.printf("Fail! payDueToAdd in set with id %s not added.\n", iteratorOfTest);
             }
-//            System.out.println("* Report after add: "+payDueSet.size());
-//            payDueSetToPrint(payDueSet);
 
-            PayDue payDueToFind = dao.getPayDueByIdSet(randomId);
+            PayDue payDueToFind = dao.getPayDueByIdSet(iteratorOfTest);
 
             if (payDueToFind != null) {
                 System.out.printf("For id %s, \npayDueToFind in set success. \npayDueToFind: %s\n"
-                        , randomId, payDueToFind);
+                        , iteratorOfTest, payDueToFind);
             } else {
-                System.out.printf("For id %s, \nFail! payDueToFind not found in set. \n", randomId);
+                System.out.printf("For id %s, \nFail! payDueToFind not found in set. \n", iteratorOfTest);
             }
 
             PayDue payDueToUpdate = getPayDueToUpdate(payDueToFind);
@@ -178,19 +158,15 @@ public class OperationsManager {
                 System.out.printf("payDueToUpdate in set success. \npayDueToUpdate: %s\n"
                         , payDueToUpdate);
             } else {
-                System.out.printf("Fail! payDueToUpdate in set not updated. id: %s\n", randomId);
+                System.out.printf("Fail! payDueToUpdate in set not updated. id: %s\n", iteratorOfTest);
             }
-//            System.out.println("* Report after update: "+payDueSet.size());
-//            payDueSetToPrint(payDueSet);
 
-            if (dao.deletePayDueByIdSet(randomId)) {
+            if (dao.deletePayDueByIdSet(iteratorOfTest)) {
                 System.out.printf("Deleting payDue with id %s from set operation success \n"
-                        , randomId);
+                        , iteratorOfTest);
             } else {
-                System.out.printf("Fail! deletePayDueByMapKey from set not deleted. id: %s\n", randomId);
+                System.out.printf("Fail! deletePayDueByMapKey from set not deleted. id: %s\n", iteratorOfTest);
             }
-//            System.out.println("* Report after delete: "+payDueSet.size());
-//            payDueSetToPrint(payDueSet);
         }
 
         System.out.println("*** Final payDueSetToPrint: " + payDueSet.size());
@@ -246,6 +222,12 @@ public class OperationsManager {
             );
         }
         return null;
+    }
+
+    private static List<Long> exampleListMaker() {
+
+        return Stream.of(1L, 3L, 7L, 11L, 17L, 23L, 26L, 5L, 9L, 10L, 4L, 33L,29L, 2L, 66L, 15L, 19L, -1L, 11L, 3L)
+                .collect(Collectors.toList());
     }
 
 }

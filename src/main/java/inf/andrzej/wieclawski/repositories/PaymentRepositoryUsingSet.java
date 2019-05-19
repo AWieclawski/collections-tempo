@@ -25,7 +25,6 @@ public class PaymentRepositoryUsingSet {
     }
 
     public static boolean addPayDueToSet(PayDue payDueToAdd) {
-//        logger.info("addPayDueToSet "+payDueToAdd);
         payDueSetBase.add(payDueToAdd);
         return true;
     }
@@ -55,21 +54,19 @@ public class PaymentRepositoryUsingSet {
             payDueSetBase.add(payDueToUpdateInSet);
             return true;
         }
-        logger.info("Ops! Not updated payDue in set, with id: " + payDueToUpdateInSet.getPayDueId());
+        logger.info("Ops! Not updated payDue in set");
         return false;
     }
 
     public static boolean removePayDueByIdIfExistsInSet(Long payDueIdToRemoveInSet) {
         PayDue payDueToRemoveInSet = findPayDueByIdInSet(payDueIdToRemoveInSet);
-//        logger.info("payDueToRemoveInSet: " + payDueToRemoveInSet);
         if (payDueToRemoveInSet != null) {
             if (payDueSetBase.contains(payDueToRemoveInSet)) {
-//                logger.info("payDueToRemoveInSet returned true");
                 payDueSetBase.remove(payDueToRemoveInSet);
                 return true;
             }
         }
-        logger.info("Ops! Not deleted payDue in set, with id " + payDueIdToRemoveInSet);
+        logger.info("Ops! Not deleted payDue in set");
         return false;
     }
 }

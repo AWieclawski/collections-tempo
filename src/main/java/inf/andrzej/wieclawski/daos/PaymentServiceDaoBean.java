@@ -18,7 +18,7 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
     public List<PayDue> getPayDueList() {
         List<PayDue> payDues = PaymentRepositoryUsingList.getPayDuesBaseList();
         if (payDues.isEmpty()) {
-            logger.info("Ops! No list of PayDues in Base");
+            logger.info("Ops, getPayDueList fail!");
             return payDues;
         }
         return payDues;
@@ -29,7 +29,7 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
         if (payDueIdToFindInList != null) {
             return PaymentRepositoryUsingList.findPayDueByIdInList(payDueIdToFindInList);
         }
-        logger.info("Ops! payDueIdToFindInList is null");
+        logger.info("Ops getPayDueByIdList fai!");
         return null;
     }
 
@@ -40,8 +40,7 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
         if (PaymentRepositoryUsingList.addPayDueToBaseList(payDueAdded)) {
             return payDueAdded;
         }
-        logger.info("The payDue: " + payDueAdded
-                + " not successfully added to list");
+        logger.info("Ops, addPayDueList!");
         return null;
     }
 
@@ -49,9 +48,8 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
     public boolean updatePayDueList(PayDue payDueToUpdate) {
         if (payDueToUpdate != null) {
             return PaymentRepositoryUsingList.updatePayDueIfExistsInList(payDueToUpdate);
-//            return true;
         }
-        logger.info("Not updated. payDue is empty ");
+        logger.info("Ops, updatePayDueList fail!");
         return false;
     }
 
@@ -62,7 +60,7 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
             payDues.remove(PaymentRepositoryUsingList.findPayDueByIdInList(idOfPayDueToDelete));
             return true;
         }
-        logger.info("Can not delete payDue with id: " + idOfPayDueToDelete);
+        logger.info("Ops, deletePayDueByIdList fail!");
         return false;
     }
 
@@ -70,7 +68,7 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
     public Map<Long, PayDue> getPayDueMap() {
         Map<Long, PayDue> payDueMapToGet = PaymentRepositoryUsingMap.getPayDuesBaseMap();
         if (payDueMapToGet.size() == 0) {
-            logger.info("Ops! PayDuesBaseMap is empty");
+            logger.info("Ops, getPayDueMap Fail! ");
             return payDueMapToGet;
         }
         return payDueMapToGet;
@@ -81,7 +79,7 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
         if (PaymentRepositoryUsingMap.findPayDueByIdInMap(key).isPresent()) {
             return PaymentRepositoryUsingMap.findPayDueByIdInMap(key).get();
         }
-        logger.info("Ops! payDueIdToFindInMap is not present " + key);
+        logger.info("Ops, getPayDueByMapKey fail! ");
         return null;
     }
 
@@ -92,8 +90,7 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
         if (PaymentRepositoryUsingMap.addPayDueToBaseMap(payDueAdded)) {
             return payDueAdded;
         }
-        logger.info("Ops! The payDue: " + payDueToAddInMap
-                + " not added to map");
+        logger.info("Ops, addPayDueToMap fail! ");
         return null;
     }
 
@@ -102,7 +99,7 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
         if (payDueToUpdateInMap != null) {
             return PaymentRepositoryUsingMap.updatePayDueIfExistsInMap(payDueToUpdateInMap);
         }
-        logger.info("Ops! The payDueToUpdateInMap not updated in map");
+        logger.info("Ops, updatePayDueMap fail! ");
         return false;
     }
 
@@ -113,7 +110,7 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
             payDueMap.remove(keyToDelete);
             return true;
         }
-        logger.info("Can not delete payDue with key: " + keyToDelete);
+        logger.info("Ops, deletePayDueByMapKey fail! ");
         return false;
     }
 
@@ -121,7 +118,7 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
     public SortedSet<PayDue> getPayDueSet() {
         SortedSet<PayDue> payDueSet = PaymentRepositoryUsingSet.getPayDuesSetBase();
         if (payDueSet.isEmpty()) {
-            logger.info("Ops! PayDuesSetBase is empty");
+            logger.info("Ops, getPayDueSet fail! ");
             return payDueSet;
         }
         return payDueSet;
@@ -132,20 +129,18 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
         if (payDueIdToFindInSet != null) {
             return PaymentRepositoryUsingSet.findPayDueByIdInSet(payDueIdToFindInSet);
         }
-        logger.info("Ops! payDueIdToFindInSet not found " + payDueIdToFindInSet);
+        logger.info("Ops, getPayDueByIdSet fail! ");
         return null;
     }
 
     @Override
     public PayDue addPayDueSet(PayDue payDueToAddInSet) {
         Long newIdInSet = PaymentRepositoryUsingSet.getMaxIdInSet();
-//        logger.info("newIdInSet: " + newIdInSet);
         PayDue payDueAdded = newPayDueToAddWithMaxId(payDueToAddInSet, newIdInSet);
         if (PaymentRepositoryUsingSet.addPayDueToSet(payDueAdded)) {
             return payDueAdded;
         }
-        logger.info("The payDue: " + payDueToAddInSet
-                + " not successfully added to map");
+        logger.info("Ops, addPayDueSet fail! ");
         return null;
     }
 
@@ -154,7 +149,7 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
         if (payDueToUpdateInSet != null) {
             return PaymentRepositoryUsingSet.updatePayDueIfExistsInSet(payDueToUpdateInSet);
         }
-        logger.info("Ops! The payDueToUpdateInSet not updated in set " + payDueToUpdateInSet);
+        logger.info("Ops, updatePayDueSet fail! ");
         return false;
     }
 
@@ -164,7 +159,7 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
 //            logger.info("deletePayDueByIdSet returns");
             return PaymentRepositoryUsingSet.removePayDueByIdIfExistsInSet(payDueIdToDeleteInSet);
         }
-        logger.info("Ops! The payDueToUpdateInSet not updated in set, id: " + payDueIdToDeleteInSet);
+        logger.info("Ops, deletePayDueByIdSet fail! ");
         return false;
     }
 
@@ -179,7 +174,7 @@ public class PaymentServiceDaoBean implements PaymentServiceDao {
                     payDueReceived.getPaymentPerDay()
             );
         }
-        logger.info("payDueToAddInMap is null ");
+        logger.info("Ops, newPayDueToAddWithMaxId fail! ");
         return null;
     }
 }

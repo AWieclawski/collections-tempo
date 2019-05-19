@@ -47,10 +47,9 @@ public class PaymentRepositoryUsingMap {
     public static boolean updatePayDueIfExistsInMap(PayDue payDueToCheckInMap) {
         if (findPayDueByIdInMap(payDueToCheckInMap.getPayDueId()).isPresent()) {
             baseOfPayDuesMap.put(payDueToCheckInMap.getPayDueId(), payDueToCheckInMap);
-//            logger.info("Success! Updated payDue in map with key: " + payDueToCheckInMap.getPayDueId());
             return true;
         }
-        logger.info("Ops! Not updated payDue in map: " + payDueToCheckInMap);
+        logger.info("Ops! Not updated payDue in map");
         return false;
     }
 

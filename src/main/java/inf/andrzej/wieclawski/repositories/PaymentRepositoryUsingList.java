@@ -31,7 +31,7 @@ public class PaymentRepositoryUsingList {
             payDueArrayListBase.add(payDueToAdd);
             return true;
         }
-        logger.info("Ops! payDueToAdd id exists in payDueArrayListBase. Size : "
+        logger.info("Ops, addPayDueToBaseList fail!"
                 + payDueArrayListBase.size());
         return false;
     }
@@ -44,7 +44,7 @@ public class PaymentRepositoryUsingList {
                     .max(Comparator.comparing(PayDue::getPayDueId))
                     .get().getPayDueId() + 1L;
         }
-        logger.info("Ops! getNextIdInList not found max id. New id: " + 1L);
+        logger.info("Ops, getNextIdInList fail! ");
         return 1L; // supposed Map is empty
     }
 
@@ -63,7 +63,7 @@ public class PaymentRepositoryUsingList {
             payDueArrayListBase.set(index, payDueToUpdateInList);
             return true;
         }
-        logger.info("Ops! Not updated payDue in set with id: " + payDueToUpdateInList.getPayDueId());
+        logger.info("Ops, updatePayDueIfExistsInList fail!");
         return false;
     }
 
